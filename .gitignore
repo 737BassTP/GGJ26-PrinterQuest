@@ -1,0 +1,7 @@
+gitignore
+*.lnk
+a.out.*
+*.exe
+.vs
+Tiled
+
