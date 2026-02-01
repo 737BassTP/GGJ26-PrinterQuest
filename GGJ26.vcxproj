@@ -66,8 +66,10 @@
     <NMakeBuildCommandLine>make all</NMakeBuildCommandLine>
     <NMakeOutput>GGJ26.exe</NMakeOutput>
     <NMakeCleanCommandLine>make clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>make clean &amp;&amp; make all</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine>make clean &amp;&amp; make</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <AdditionalOptions>/std=c++20</AdditionalOptions>
+    <IncludePath>C:\DEVEL\SDL\x86_64-w64-mingw32\include;C:\DEVEL\ffmpeg\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakeBuildCommandLine>make all</NMakeBuildCommandLine>
@@ -93,6 +95,21 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\credits.hpp" />
+    <ClInclude Include="Source\defines.hpp" />
+    <ClInclude Include="Source\functions.hpp" />
+    <ClInclude Include="Source\game.hpp" />
+    <ClInclude Include="Source\global.hpp" />
+    <ClInclude Include="Source\io.hpp" />
+    <ClInclude Include="Source\menu.hpp" />
+    <ClInclude Include="Source\printer.hpp" />
+    <ClInclude Include="Source\sdl.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

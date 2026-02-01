@@ -1,11 +1,15 @@
 #pragma once
 
-SDL_Window* window;
-SDL_Renderer* renderer;
+/*
+
 bool running = 1;
 SDL_PixelFormatEnum pixelformatenum = SDL_PIXELFORMAT_RGBA32;
 
+Mix_Music* music = nullptr;
+
 //Forward declarations.
+extern void keyboard_update();
+
 extern void game_draw();
 extern void game_input();
 extern void game_update();
@@ -51,9 +55,20 @@ void sdl_init()
 		PrintError("Mix_Init()", SDL_GetError());
 		return;
 	}
+	int chunksize = 1<11;//pow(2,11) = 2048
+	Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, chunksize);
+	int flags_allow = SDL_AUDIO_ALLOW_ANY_CHANGE;
+	int moad = Mix_OpenAudioDevice(48000, AUDIO_F32SYS, 2, chunksize, NULL, flags_allow);
+	if (moad == -1)
+	{
+		PrintError("Mix_OpenAudioDevice()", SDL_GetError());
+		return;
+	}
 }
 void sdl_free()
 {
+	Mix_HaltMusic();
+	Mix_CloseAudio();
 	Mix_Quit();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -61,6 +76,9 @@ void sdl_free()
 }
 void sdl_loop()
 {
+	image_t test;
+	test.load("assets/s_tileset.png");
+
 	printf("Starting...\n");
 	while (running)
 	{
@@ -73,14 +91,18 @@ void sdl_loop()
 			
 			}
 		}
+		//Input.
+		keyboard_update();
+
+		//Update.
 		if (global_gamemode_is_menu()) { menu_input(); menu_update(); }
 		if (global_gamemode_is_game()) { game_input(); game_update(); }
 		if (global_gamemode_is_credits()) { credits_input(); credits_update(); }
 
-
+		//Draw
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
 		SDL_RenderClear(renderer);
 		
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
 		SDL_Rect rect = rectangle(32,32,64,64);
 		SDL_RenderFillRect(renderer, &rect);
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -90,12 +112,18 @@ void sdl_loop()
 		if (global_gamemode_is_game()) { game_draw(); }
 		if (global_gamemode_is_credits()) { credits_draw(); }
 
+		test.draw(64, 64);
+
 		SDL_RenderPresent(renderer);
 		SDL_Delay(16);
 	}
 	printf("...finished!\n");
+
+	test.free();
 }
 void sdl_draw()
 {
 
 }
+
+/**/

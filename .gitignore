@@ -4,4 +4,5 @@ a.out.*
 *.exe
 .vs
 Tiled
+~*
 
